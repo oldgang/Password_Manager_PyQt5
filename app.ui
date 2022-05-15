@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Menadżer haseł</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="pushButton_master">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>30</y>
+      <width>231</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Hasło główne</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_show">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>30</y>
+      <width>231</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Wyświetl listę haseł</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_add_password">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>220</y>
+      <width>231</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Dodaj hasło</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_remove_password">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>220</y>
+      <width>231</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Usuń hasło</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>600</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuMenu">
+    <property name="title">
+     <string>Menu</string>
+    </property>
+    <addaction name="action_exit_app"/>
+    <addaction name="separator"/>
+    <addaction name="action_erase_everything"/>
+   </widget>
+   <addaction name="menuMenu"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="action_2">
+   <property name="text">
+    <string>Zmień hasło główne</string>
+   </property>
+  </action>
+  <action name="action_exit_app">
+   <property name="text">
+    <string>Zamknij program</string>
+   </property>
+  </action>
+  <action name="actionUsu_wszystkie_dane">
+   <property name="text">
+    <string>Usuń wszystkie dane</string>
+   </property>
+  </action>
+  <action name="action_erase_everything">
+   <property name="text">
+    <string>Usuń wszystkie dane</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
