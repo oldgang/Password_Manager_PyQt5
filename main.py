@@ -16,7 +16,6 @@ import ast
 masterPassword = ''
 masterPasswordHashHex = ''
 LOGGED_IN = False
-REGISTERED = False
 fernetKey = Fernet(Fernet.generate_key())
 storedData = list()
 encryptedData = fernetKey.encrypt('start'.encode('utf-8'))
@@ -46,7 +45,6 @@ def password_generator(length, letters, digits, special_characters):
     if special_characters:
         characters += string.punctuation
     password = ''.join(secrets.choice(characters) for _ in range(length))
-    # print(password)
     return password
 
 
@@ -110,7 +108,6 @@ def load_data():
     global encryptedData
     with open('data.txt', 'r') as dataFile:
         encryptedData = dataFile.read()[2:-1:1].encode('utf-8')
-    print(encryptedData)
     decrypt_data()
 
 
@@ -120,11 +117,11 @@ def save_data():
     encrypt_data()
     with open('data.txt', 'w') as dataFile:
         dataFile.write(str(encryptedData))
-    print(f"storedData after saving: {storedData}")
 
 
 def generate_fernet_key():
     global masterPassword
+    global fernetKey
     password = masterPassword.encode('utf-8')
     salt = masterPassword.encode('utf-8')
 
@@ -135,14 +132,12 @@ def generate_fernet_key():
         iterations=390000,
     )
     key = base64.urlsafe_b64encode(kdf.derive(password))
-    global fernetKey
     fernetKey = Fernet(key)
 
 
 def encrypt_data():
     global storedData
     global encryptedData
-    global fernetKey
     global fernetKey
     encryptedData = fernetKey.encrypt(str(storedData).encode('utf-8'))
 
@@ -350,14 +345,8 @@ class RegistrationWidget(QWidget):
         masterPassword = master1
         save_master_to_file()
         # if registration is complete emit a signal and close the window
-        global REGISTERED
-        REGISTERED = True
-        if REGISTERED:
-            self.registeredSignal.emit()
-            self.close()
-        else:
-            display_error(self, "Nieprawidłowe hasło")
-            return
+        self.registeredSignal.emit()
+        self.close()
 
 
 class MainWindow(QMainWindow):
@@ -413,17 +402,3 @@ if __name__ == '__main__':
     except SystemExit:
         print('Closing Window...')
     # DEBUG
-    # print(master_exists())
-    # print(storedData)
-    # siteData = list()
-    # siteData.append("gmail.com")
-    # siteData.append("login")
-    # siteData.append("password")
-    # print(siteData)
-    # storedData.append(siteData)
-    # storedData.append(siteData)
-    # print(storedData)
-    # for site in storedData:
-    #     print(f"row: {site}")
-    #     for data in site:
-    #         print(f"column: {data}")
