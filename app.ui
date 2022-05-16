@@ -86,9 +86,10 @@
     <property name="title">
      <string>Menu</string>
     </property>
-    <addaction name="action_exit_app"/>
+    <addaction name="action_exit"/>
     <addaction name="separator"/>
     <addaction name="action_erase_everything"/>
+    <addaction name="action_info"/>
    </widget>
    <addaction name="menuMenu"/>
   </widget>
@@ -98,7 +99,7 @@
     <string>Zmień hasło główne</string>
    </property>
   </action>
-  <action name="action_exit_app">
+  <action name="action_exit">
    <property name="text">
     <string>Zamknij program</string>
    </property>
@@ -111,6 +112,11 @@
   <action name="action_erase_everything">
    <property name="text">
     <string>Usuń wszystkie dane</string>
+   </property>
+  </action>
+  <action name="action_info">
+   <property name="text">
+    <string>Informacje o programie</string>
    </property>
   </action>
  </widget>

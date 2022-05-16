@@ -154,10 +154,8 @@ def decrypt_data():
 def erase_data():
     if master_exists():
         os.remove("MasterPassword.txt")
-        time.sleep(0.2)
     if data_exists():
         os.remove("data.txt")
-        time.sleep(0.2)
 
 
 class MasterPasswordWidget(QWidget):
@@ -167,8 +165,6 @@ class MasterPasswordWidget(QWidget):
         self.textEdit_GP.setReadOnly(True)
         self.pushButton_GP.clicked.connect(self.generate_password)
         self.pushButton_save_master.clicked.connect(self.save_master_password)
-
-    # TO DO CHANGE MASTER PASSWORD (INCLUDING CRYPTOGRAPHY CHANGES)
 
     def save_master_password(self):
         global masterPassword
@@ -283,6 +279,14 @@ class RemovePasswordWidget(QWidget):
     def __init__(self):
         super().__init__()
         uic.loadUi('remove_password.ui', self)
+        self.pushButton_delete.clicked.connect(self.delete_password)
+
+    def delete_password(self):
+        global storedData
+        site_to_delete = self.lineEdit_site.text()
+        for siteData in storedData:
+            if site_to_delete in siteData[0]:
+                storedData.remove(siteData)
 
 
 class ShowPasswordsWidget(QWidget):
@@ -349,6 +353,13 @@ class RegistrationWidget(QWidget):
         self.close()
 
 
+class InformationWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        uic.loadUi('info.ui', self)
+        self.textEdit.setReadOnly(True)
+
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -357,7 +368,13 @@ class MainWindow(QMainWindow):
         self.pushButton_add_password.clicked.connect(self.create_add_password_widget)
         self.pushButton_remove_password.clicked.connect(self.create_remove_password_widget)
         self.pushButton_show.clicked.connect(self.create_show_passwords_widget)
-        # self.action_erase_everything = erase_data() -> Buggy feature
+        self.action_info.triggered.connect(self.create_info_widget)
+        self.action_exit.triggered.connect(self.close)
+        self.action_erase_everything.triggered.connect(self.erase_and_close)  # -> Buggy feature
+
+    def erase_and_close(self):
+        erase_data()
+        self.close()
 
     def create_master_widget(self):
         self.master_widget = MasterPasswordWidget()
@@ -374,6 +391,10 @@ class MainWindow(QMainWindow):
     def create_show_passwords_widget(self):
         self.show_passwords_widget = ShowPasswordsWidget()
         self.show_passwords_widget.show()
+
+    def create_info_widget(self):
+        self.info_widget = InformationWidget()
+        self.info_widget.show()
 
 
 if __name__ == '__main__':
