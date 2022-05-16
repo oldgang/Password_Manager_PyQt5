@@ -192,6 +192,7 @@ class MasterPasswordWidget(QWidget):
         else:
             display_error(self, "Zaznacz, którą metodą chcesz wygenerować hasło")
             return
+        self.close()
 
     def generate_password(self):
         if not self.radioButton_automatic.isChecked():
@@ -280,13 +281,25 @@ class RemovePasswordWidget(QWidget):
         super().__init__()
         uic.loadUi('remove_password.ui', self)
         self.pushButton_delete.clicked.connect(self.delete_password)
+        self.lineEdit_site.returnPressed.connect(self.delete_password)
+        self.lineEdit_site.setFocus()
 
     def delete_password(self):
         global storedData
         site_to_delete = self.lineEdit_site.text()
+        if not len(site_to_delete) > 0:
+            display_error(self, "Pole nie może być puste.")
+            return
+        site_found = False
         for siteData in storedData:
             if site_to_delete in siteData[0]:
+                site_found = True
                 storedData.remove(siteData)
+        if not site_found:
+            display_error(self, "Nie znaleziono danych o podanej stronie.")
+            return
+        save_data()
+        self.close()
 
 
 class ShowPasswordsWidget(QWidget):

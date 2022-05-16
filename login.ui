@@ -13,10 +13,16 @@
   <property name="windowTitle">
    <string>Ekran logowania</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>90</x>
+     <x>80</x>
      <y>10</y>
      <width>191</width>
      <height>51</height>
@@ -28,7 +34,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Podaj hasło główne</string>
+    <string>Podaj hasło główne:</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_login">
