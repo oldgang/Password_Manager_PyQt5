@@ -162,19 +162,19 @@ class MasterPasswordWidget(QWidget):
     def __init__(self):
         super().__init__()
         uic.loadUi('master_password_widget.ui', self)
-        self.textEdit_GP.setReadOnly(True)
+        self.lineEdit_GP.setReadOnly(True)
         self.pushButton_GP.clicked.connect(self.generate_password)
         self.pushButton_save_master.clicked.connect(self.save_master_password)
 
     def save_master_password(self):
         global masterPassword
         if self.radioButton_automatic.isChecked():
-            masterPassword = self.textEdit_GP.toPlainText()
+            masterPassword = self.lineEdit_GP.text()
             save_master_to_file()
 
         elif self.radioButton_manual.isChecked():
-            password1 = self.textEdit_manual1.toPlainText()
-            password2 = self.textEdit_manual2.toPlainText()
+            password1 = self.lineEdit_manual1.text()
+            password2 = self.lineEdit_manual2.text()
 
             # check if passwords are the same
             if not password1 == password2:
@@ -186,7 +186,7 @@ class MasterPasswordWidget(QWidget):
                 display_error(self, "Hasło nie może mieć zerowej długości")
                 return
 
-            masterPassword = self.textEdit_manual1.toPlainText()
+            masterPassword = self.lineEdit_manual1.text()
             save_master_to_file()
 
         else:
@@ -196,7 +196,7 @@ class MasterPasswordWidget(QWidget):
     def generate_password(self):
         if not self.radioButton_automatic.isChecked():
             return
-        length = self.textEdit_GP_length.toPlainText()
+        length = self.lineEdit_GP_length.text()
 
         # check if password length is valid
         if not length_isvalid(length):
@@ -214,7 +214,7 @@ class MasterPasswordWidget(QWidget):
             return
 
         password = password_generator(length, letters, digits, special_characters)
-        self.textEdit_GP.setText(password)
+        self.lineEdit_GP.setText(password)
 
 
 class AddPasswordWidget(QWidget):
@@ -307,10 +307,12 @@ class LoginWidget(QWidget):
         super().__init__()
         uic.loadUi('login.ui', self)
         self.pushButton_login.clicked.connect(self.login)
+        self.lineEdit_login.returnPressed.connect(self.login)
+        self.lineEdit_login.setFocus()
 
     def login(self):
         # check if master password is correct
-        password = self.textEdit_login.toPlainText()
+        password = self.lineEdit_login.text()
         if not len(password) > 0:
             display_error(self, "Hasło nie może mieć zerowej długości")
             return
