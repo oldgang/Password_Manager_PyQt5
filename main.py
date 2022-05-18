@@ -1,12 +1,13 @@
 import base64
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QMessageBox
-from PyQt5 import uic
+
+from PyQt5.QtGui import QBrush, QPainter
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QMessageBox, QTableWidgetItem, QTableWidget, QHeaderView
+from PyQt5 import uic, QtWidgets, QtGui
 import secrets
 import string
 import os.path
 import hashlib
-import time
 from PyQt5.QtCore import pyqtSignal
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
@@ -303,14 +304,56 @@ class RemovePasswordWidget(QWidget):
 
 
 class ShowPasswordsWidget(QWidget):
+
     def __init__(self):
         super().__init__()
         uic.loadUi('show_passwords.ui', self)
-        self.show_passwords()
+        self.show_passwords(storedData)
+        self.pushButton.clicked.connect(self.search)
 
-    def show_passwords(self):
+    def show_passwords(self, data):
         global storedData
-        print(storedData)
+        self.tableWidget.clear()
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers) # Make table read-only
+        self.tableWidget.setRowCount(len(data) + 1)
+        self.tableWidget.setColumnCount(3)
+        self.tableWidget.setItem(0, 0, QTableWidgetItem("Strona"))
+        self.tableWidget.setItem(0, 1, QTableWidgetItem("Login"))
+        self.tableWidget.setItem(0, 2, QTableWidgetItem("Hasło"))
+        self.tableWidget.item(0, 0).setBackground(QtGui.QColor(150, 150, 150))
+        self.tableWidget.item(0, 1).setBackground(QtGui.QColor(150, 150, 150))
+        self.tableWidget.item(0, 2).setBackground(QtGui.QColor(150, 150, 150))
+        counter = 1
+        for site_data in data:
+            for i in range(3):
+                self.tableWidget.setItem(counter, i, QTableWidgetItem(str(site_data[i])))
+                if counter % 2 == 0:
+                    color = QtGui.QColor(0, 150, 255)
+                else:
+                    color = QtGui.QColor(0, 255, 150)
+                self.tableWidget.item(counter, i).setBackground(color)
+            counter += 1
+        # Table will fit the screen horizontally
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        # Remove the horizontal and vertical cell counters
+        self.tableWidget.horizontalHeader().setVisible(False)
+        self.tableWidget.verticalHeader().setVisible(False)
+        # self.tableWidget.verticalScrollBar().setVisible(True)
+        self.tableWidget.setStyleSheet("QTableWidgetItem {border-color: black; border-style: outset; border-width: 2px}")
+
+    def search(self):
+        global storedData
+        search_data = list()
+        search_string = self.lineEdit.text()
+        if len(search_string) == 0:
+            self.show_passwords(storedData)
+            return
+        for site_data in storedData:
+            if search_string in site_data[0]:
+                search_data.append(site_data)
+        self.show_passwords(search_data)
+        print(search_data)
 
 
 class LoginWidget(QWidget):
