@@ -1,8 +1,6 @@
 import base64
 import sys
-
-from PyQt5.QtGui import QBrush, QPainter
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QMessageBox, QTableWidgetItem, QTableWidget, QHeaderView
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QMessageBox, QTableWidgetItem, QHeaderView
 from PyQt5 import uic, QtWidgets, QtGui
 import secrets
 import string
@@ -297,7 +295,7 @@ class RemovePasswordWidget(QWidget):
                 site_found = True
                 storedData.remove(siteData)
         if not site_found:
-            display_error(self, "Nie znaleziono danych o podanej stronie.")
+            display_error(self, "Nie znaleziono danych dla podanej strony.")
             return
         save_data()
         self.close()
@@ -353,7 +351,6 @@ class ShowPasswordsWidget(QWidget):
             if search_string in site_data[0]:
                 search_data.append(site_data)
         self.show_passwords(search_data)
-        print(search_data)
 
 
 class LoginWidget(QWidget):
@@ -464,10 +461,8 @@ if __name__ == '__main__':
         loginWidget = LoginWidget()
         loginWidget.show()
         loginWidget.loggedSignal.connect(mainWindow.show)
-        print("Master Exists")
     else:
         # registration screen
-        print("Master Doesn't Exist")
         registrationWidget = RegistrationWidget()
         registrationWidget.show()
         registrationWidget.registeredSignal.connect(mainWindow.show)
